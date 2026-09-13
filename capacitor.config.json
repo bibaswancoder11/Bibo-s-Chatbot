@@ -1,0 +1,13 @@
+{
+  "appId": "com.localai.studio",
+  "appName": "Local AI Studio",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  },
+  "android": {
+    "allowMixedContent": true,
+    "webContentsDebuggingEnabled": true
+  }
+}
