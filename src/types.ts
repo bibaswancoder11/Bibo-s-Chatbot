@@ -1,5 +1,39 @@
 export type EngineType = 'web-llm' | 'in-browser-nlp' | 'transformers-wasm' | 'ollama-local' | 'chrome-ai';
 
+export interface ChatAttachment {
+  id: string;
+  name: string;
+  type: 'document' | 'code' | 'image' | 'data' | 'other';
+  mimeType: string;
+  sizeBytes: number;
+  textContent?: string;
+  dataUrl?: string;
+  previewUrl?: string;
+  summary?: string;
+}
+
+export interface VoiceInputMeta {
+  transcription: string;
+  durationSec?: number;
+  audioDataUrl?: string;
+  confidence?: number;
+  isLiveTranscript?: boolean;
+}
+
+export interface CameraCaptureMeta {
+  dataUrl: string;
+  width: number;
+  height: number;
+  timestamp: number;
+  visualAnalysis?: {
+    dominantColors: string[];
+    isBright: boolean;
+    aspectRatio: string;
+    detectedText?: string;
+    description: string;
+  };
+}
+
 export interface ChatMessage {
   id: string;
   role: 'user' | 'assistant' | 'system';
@@ -7,6 +41,9 @@ export interface ChatMessage {
   timestamp: number;
   engineUsed?: EngineType;
   modelUsed?: string;
+  attachments?: ChatAttachment[];
+  voiceInput?: VoiceInputMeta;
+  cameraCapture?: CameraCaptureMeta;
   stats?: {
     latencyMs?: number;
     tokensEstimated?: number;

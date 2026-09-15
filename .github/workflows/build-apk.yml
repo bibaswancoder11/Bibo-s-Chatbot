@@ -68,12 +68,20 @@ jobs:
           MANIFEST_PATH="android/app/src/main/AndroidManifest.xml"
           if [ -f "$MANIFEST_PATH" ]; then
             echo "Checking Android Manifest permissions..."
-            # Ensure Internet and Network State permissions
+            # Ensure Internet, Network State, Camera, and Audio permissions
             if ! grep -q "android.permission.INTERNET" "$MANIFEST_PATH"; then
               sed -i '/<manifest/a \    <uses-permission android:name="android.permission.INTERNET" />' "$MANIFEST_PATH"
             fi
             if ! grep -q "android.permission.ACCESS_NETWORK_STATE" "$MANIFEST_PATH"; then
               sed -i '/<manifest/a \    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />' "$MANIFEST_PATH"
+            fi
+            if ! grep -q "android.permission.CAMERA" "$MANIFEST_PATH"; then
+              sed -i '/<manifest/a \    <uses-permission android:name="android.permission.CAMERA" />' "$MANIFEST_PATH"
+              sed -i '/<manifest/a \    <uses-feature android:name="android.hardware.camera" android:required="false" />' "$MANIFEST_PATH"
+            fi
+            if ! grep -q "android.permission.RECORD_AUDIO" "$MANIFEST_PATH"; then
+              sed -i '/<manifest/a \    <uses-permission android:name="android.permission.RECORD_AUDIO" />' "$MANIFEST_PATH"
+              sed -i '/<manifest/a \    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />' "$MANIFEST_PATH"
             fi
             # Enable cleartext traffic for local network LLM servers (like Ollama on LAN)
             sed -i 's/<application /<application android:usesCleartextTraffic="true" /' "$MANIFEST_PATH" || true
